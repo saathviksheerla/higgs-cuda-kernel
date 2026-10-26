@@ -1,0 +1,14 @@
+# Personal reference - not for public
+project-context.md
+
+# Compiled binaries — generated at runtime in Colab
+*.so
+
+# Kaggle credentials — never commit these
+kaggle.json
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Mac junk
+.DS_Store
