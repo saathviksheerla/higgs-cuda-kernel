@@ -11,7 +11,7 @@ Timings vary across runs and hardware. Numbers below are from a single Colab T4 
 | Step | Typical Time | Approximate Speedup |
 |---|---|---|
 | PyTorch CPU normalization (250k x 30) | ~25 ms | baseline |
-| CUDA kernel, compute only | ~0.5 ms | ~50x |
+| CUDA kernel (PyTorch GPU), compute only | ~0.5 ms | ~50x |
 | CUDA kernel, with data transfer | ~14 ms | ~1.8x |
 | CUDA Streams + pinned memory | ~15 ms | ~1.7x |
 | MLP Validation AUC-ROC | 0.9090 | |

@@ -19,9 +19,11 @@ extern "C" void run_normalize(
     cudaMalloc(&d_data,  sizeof(float) * N * F);
     cudaMalloc(&d_means, sizeof(float) * F);
     cudaMalloc(&d_stds,  sizeof(float) * F);
+
     cudaMemcpy(d_data,  h_data,  sizeof(float) * N * F, cudaMemcpyHostToDevice);
     cudaMemcpy(d_means, h_means, sizeof(float) * F,     cudaMemcpyHostToDevice);
     cudaMemcpy(d_stds,  h_stds,  sizeof(float) * F,     cudaMemcpyHostToDevice);
+    
     dim3 block(32, 32);
     dim3 grid((F + 31) / 32, (N + 31) / 32);
     normalize_kernel<<<grid, block>>>(d_data, d_means, d_stds, N, F);

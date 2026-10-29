@@ -23,17 +23,22 @@ extern "C" void run_normalize_streams(
     cudaMalloc(&d_stds,  sizeof(float) * F);
     cudaMemcpy(d_means, h_means, sizeof(float) * F, cudaMemcpyHostToDevice);
     cudaMemcpy(d_stds,  h_stds,  sizeof(float) * F, cudaMemcpyHostToDevice);
+
     cudaStream_t stream0, stream1;
     cudaStreamCreate(&stream0);
     cudaStreamCreate(&stream1);
+
     dim3 block(32, 32);
     dim3 grid((F + 31) / 32, (half + 31) / 32);
+
     cudaMemcpyAsync(d_data0, h_data, sizeof(float)*half*F, cudaMemcpyHostToDevice, stream0);
     normalize_kernel<<<grid, block, 0, stream0>>>(d_data0, d_means, d_stds, half, F);
     cudaMemcpyAsync(h_data, d_data0, sizeof(float)*half*F, cudaMemcpyDeviceToHost, stream0);
+
     cudaMemcpyAsync(d_data1, h_data+half*F, sizeof(float)*half*F, cudaMemcpyHostToDevice, stream1);
     normalize_kernel<<<grid, block, 0, stream1>>>(d_data1, d_means, d_stds, half, F);
     cudaMemcpyAsync(h_data+half*F, d_data1, sizeof(float)*half*F, cudaMemcpyDeviceToHost, stream1);
+    
     cudaStreamSynchronize(stream0);
     cudaStreamSynchronize(stream1);
     cudaStreamDestroy(stream0); cudaStreamDestroy(stream1);
